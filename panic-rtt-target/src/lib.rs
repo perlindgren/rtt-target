@@ -41,11 +41,7 @@
 // compile_error
 
 #[allow(unused)]
-use core::{
-    fmt::Write,
-    panic::PanicInfo,
-    sync::atomic::{compiler_fence, Ordering::SeqCst},
-};
+use core::{fmt::Write, panic::PanicInfo};
 
 #[allow(unused)]
 use rtt_target::{ChannelMode, UpChannel};
@@ -60,14 +56,10 @@ fn panic(info: &PanicInfo) -> ! {
             writeln!(channel, "{}", info).ok();
         } else {
             // failed to get channel, but not much else we can do but spin
-            loop {
-                compiler_fence(SeqCst);
-            }
+            loop {}
         }
 
         // we should never leave critical section
-        loop {
-            compiler_fence(SeqCst);
-        }
+        loop {}
     })
 }
